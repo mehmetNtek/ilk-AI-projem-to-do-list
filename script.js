@@ -50,28 +50,27 @@ function gorevleriYukle() {
     }
 }
 
-// 6. EKRANI GÜNCELLEME - YENİ VERSİYON
+// 6. GÖREVLER NASIL GÖZÜKECEK
 function gorevleriGoster() {
     const liste = document.getElementById('gorevListesi');
-    liste.innerHTML = ''; // Listeyi temizle
+    liste.innerHTML = '';
 
-    gorevler.forEach(gorev => {
-        const li = document.createElement('li');
-        
-        // DEĞİŞEN KISIM BURASI:
-        li.innerHTML = `
-            <span 
-                onclick="gorevTamamla(${gorev.id})" 
-                style="cursor: pointer; flex-grow: 1;"
-                class="${gorev.tamamlandi ? 'tamamlandi' : ''}"
-            >
-                ${gorev.metin}
-            </span>
+gorevler.forEach(gorev => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+        <span 
+            onclick="gorevTamamla(${gorev.id})" 
+            style="cursor: pointer; ${gorev.tamamlandi ? 'text-decoration: line-through; opacity: 0.6;' : ''}"
+        >
+            ${gorev.metin}
+        </span>
+        <div>
+            <button onclick="gorevDuzenle(${gorev.id})">Düzenle</button>
             <button onclick="gorevSil(${gorev.id})">Sil</button>
-        `;
-        
-        liste.appendChild(li);
-    });
+        </div>
+    `;
+    liste.appendChild(li);
+});
 }
 
 // 7. GÜNÜ SIFIRLAMA FONKSİYONU
@@ -94,4 +93,19 @@ function gorevTamamla(id) {
     });
     // 4. Kaydet ve ekranı yenile
     kaydetVeYenile();
+}
+
+// 9. GÖREV DÜZENLEME FONKSIYONU
+function gorevDuzenle(id) {
+    // 1. Düzenlenecek görevi bul
+    const gorev = gorevler.find(g => g.id === id);
+    
+    // 2. Kullanıcıdan yeni metin iste
+    const yeniMetin = prompt('Görevi düzenleyin:', gorev.metin);
+    
+    // 3. Eğer metin girildiyse ve boş değilse kaydet
+    if (yeniMetin !== null && yeniMetin.trim() !== '') {
+        gorev.metin = yeniMetin.trim();
+        kaydetVeYenile();
+    }
 }
