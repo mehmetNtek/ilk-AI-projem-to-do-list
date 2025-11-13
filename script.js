@@ -50,17 +50,26 @@ function gorevleriYukle() {
     }
 }
 
-// 6. EKRANI GÜNCELLEME
+// 6. EKRANI GÜNCELLEME - YENİ VERSİYON
 function gorevleriGoster() {
     const liste = document.getElementById('gorevListesi');
     liste.innerHTML = ''; // Listeyi temizle
 
     gorevler.forEach(gorev => {
         const li = document.createElement('li');
+        
+        // DEĞİŞEN KISIM BURASI:
         li.innerHTML = `
-            <span>${gorev.metin}</span>
+            <span 
+                onclick="gorevTamamla(${gorev.id})" 
+                style="cursor: pointer; flex-grow: 1;"
+                class="${gorev.tamamlandi ? 'tamamlandi' : ''}"
+            >
+                ${gorev.metin}
+            </span>
             <button onclick="gorevSil(${gorev.id})">Sil</button>
         `;
+        
         liste.appendChild(li);
     });
 }
@@ -71,4 +80,18 @@ function gunuSifirla() {
         gorevler = []; // Diziyi boşalt
         kaydetVeYenile(); // localStorage'ı temizle ve ekranı güncelle
     }
+}
+
+// 8. YENİ FONKSİYON EKLE - EN SONA BUNU EKLE:
+function gorevTamamla(id) {
+    // 1. Tüm görevlerde dön
+    gorevler.forEach(gorev => {
+        // 2. Tıklanan görevi bul (ID eşleşen)
+        if (gorev.id === id) {
+            // 3. true ise false, false ise true yap (toggle)
+            gorev.tamamlandi = !gorev.tamamlandi;
+        }
+    });
+    // 4. Kaydet ve ekranı yenile
+    kaydetVeYenile();
 }
