@@ -64,3 +64,11 @@ function gorevleriGoster() {
         liste.appendChild(li);
     });
 }
+
+// 7. GÜNÜ SIFIRLAMA FONKSİYONU
+function gunuSifirla() {
+    if (confirm('Tüm görevler silinecek ve gün sıfırlanacak. Emin misin?')) {
+        gorevler = []; // Diziyi boşalt
+        kaydetVeYenile(); // localStorage'ı temizle ve ekranı güncelle
+    }
+}
